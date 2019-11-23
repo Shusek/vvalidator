@@ -15,10 +15,19 @@
  */
 package com.afollestad.vvalidator.form
 
+internal class AutoSubmitWrapper : SubmitWrapper {
 
-interface SubmitWrapper {
+    lateinit var function: () -> Unit
 
-  var isEnabled: Boolean
+    override var isEnabled: Boolean = false
+        set(value) {
+            if (isEnabled) {
+                function.invoke()
+            }
+            field = value
+        }
 
-  fun setOnSubmit(function: () -> Unit)
+    override fun setOnSubmit(function: () -> Unit) {
+        this.function = function
+    }
 }

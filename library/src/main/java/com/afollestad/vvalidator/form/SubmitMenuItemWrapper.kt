@@ -15,10 +15,20 @@
  */
 package com.afollestad.vvalidator.form
 
+import android.view.MenuItem
 
-interface SubmitWrapper {
+class SubmitMenuItemWrapper(private val item: MenuItem) : SubmitWrapper {
 
-  var isEnabled: Boolean
+    override var isEnabled: Boolean = item.isEnabled
+        set(value) {
+            item.isEnabled = value
+            field = value
+        }
 
-  fun setOnSubmit(function: () -> Unit)
+    override fun setOnSubmit(function: () -> Unit) {
+        item.setOnMenuItemClickListener {
+            function.invoke()
+            true
+        }
+    }
 }

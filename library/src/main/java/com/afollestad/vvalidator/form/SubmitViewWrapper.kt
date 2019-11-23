@@ -15,10 +15,20 @@
  */
 package com.afollestad.vvalidator.form
 
+import android.view.View
 
-interface SubmitWrapper {
+/** @author Aidan Follestad (@afollestad) */
+class SubmitViewWrapper(private val view: View) : SubmitWrapper {
 
-  var isEnabled: Boolean
+    override var isEnabled: Boolean = view.isEnabled
+        set(value) {
+            view.isEnabled = value
+            field = value
+        }
 
-  fun setOnSubmit(function: () -> Unit)
+    override fun setOnSubmit(function: () -> Unit) {
+        view.setOnClickListener {
+            function.invoke()
+        }
+    }
 }
